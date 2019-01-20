@@ -1,4 +1,4 @@
-<form action="{% url 'change_currency' %}" method="POST" class="login" style="background-color: #6DDCBD; padding: 3px;border: black; border-style: dotted"">
+<form action="{% url 'change_currency' %}" method="POST" id="currency_picker">
     {% csrf_token %}
     View listings in:
     <select name="currency" id="currency" onchange="this.form.submit()">

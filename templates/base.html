@@ -4,9 +4,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <style>
-        {% include 'static/styles.css' %}
-    </style>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>
         {% if page_name %}
             {{ page_name }}
@@ -17,22 +17,30 @@
 </head>
 
 <body>
-{% include "navigation.html" %}
-{% include "top.html" %}
 
-<div class="content">
-{{ global.session.currency }}
-    {% if info_message %}
-        <pre><p class="info_message">{{ info_message }}</p></pre><br>
-    {% endif %}
-    {% if error_message %}
-        <pre><p class="error_message">{{ error_message }}</p></pre><br>
-    {% endif %}
-    {% block content %}
-    {% endblock %}
+<div id="top">
+    {% include "top.html" %}
 </div>
 
-<div class="right"></div>
+<div id="bottom">
+    <div>
+        <div id="navigation">
+            {% include "navigation.html" %}
+        </div>
+        {% include 'currency_picker.html' %}
+    </div>
+    <div id="content">
+        {{ global.session.currency }}
+        {% if info_message %}
+            <p class="info_message">{{ info_message }}</p>
+        {% endif %}
+        {% if error_message %}
+            <p class="error_message">{{ error_message }}</p>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
 
 </body>
-</>
+</html>
