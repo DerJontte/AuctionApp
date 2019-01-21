@@ -1,15 +1,7 @@
 <div id="login">
-    {% if not user.is_authenticated %}
-        <form action="{% url 'login' %}" method="POST" id="login_form">
-            {% csrf_token %}
-            <input id="username" name="username" type="text" placeholder="Username" />
-            <input id="password" name="password" type="password" placeholder="Password"/>
-            <button type="submit">Login</button>
-        </form>
-
-    {% else %}
+    {% if user.is_authenticated %}
         <div>
-            Logged in: {{ user }}
+            You are logged in as: {{ user }}
         </div>
         <div class="buttons">
             <a href="{% url 'edit_account' %}"><button>Edit account</button></a>
@@ -20,5 +12,14 @@
                 </button>
             </form>
         </div>
+
+    {% else %}
+        <form action="{% url 'login' %}" method="POST" id="login_form">
+            {% csrf_token %}
+            <input id="username" name="username" type="text" placeholder="Username" />
+            <input id="password" name="password" type="password" placeholder="Password"/>
+            <button type="submit">Login</button>
+        </form>
+        <a href="{% url 'signup' %}"><button>Register</button></a>
     {% endif %}
 </div>

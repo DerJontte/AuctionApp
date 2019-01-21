@@ -9,11 +9,17 @@ html {
 }
 
 body {
-    background-color: #DDA;
+    background-color: dimgrey;
     font-family: sans-serif;
     font-size: 14px;
     width: 100%;
     max-width: 1024px;
+    border: 3px dashed black;
+}
+
+.table-name {
+    text-align: left;
+    padding-right: 20px;
 }
 
 button {
@@ -22,6 +28,9 @@ button {
 }
 
 #top {
+    background-color: beige;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -47,8 +56,10 @@ button {
 
 #bottom {
     padding-top: 20px;
+    padding-left: 10px;
     display: flex;
-}
+    height: 90vh;
+    background-color: beige;}
 
 #bottom_side div {
     margin-bottom: 5px;

@@ -6,7 +6,6 @@
         {% if user.is_authenticated %}
             <li><a href="{% url 'auctionAdd' %}">Add auction item</a></li>
         {%  else %}
-            <li><a href="{% url 'signup' %}">Register</a></li>
         {% endif %}
 
         {% if user.is_superuser %}
