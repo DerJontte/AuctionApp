@@ -1,15 +1,17 @@
-<ul>
-    <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'auctions' %}">Browse auctions</a></li>
+<div id="navigation">
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'auctions' %}">Browse auctions</a></li>
 
-    {% if user.is_authenticated %}
-        <li><a href="{% url 'auctionAdd' %}">Add auction item</a></li>
-    {%  else %}
-        <li><a href="{% url 'signup' %}">Register</a></li>
-    {% endif %}
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'auctionAdd' %}">Add auction item</a></li>
+        {%  else %}
+            <li><a href="{% url 'signup' %}">Register</a></li>
+        {% endif %}
 
-    {% if user.is_superuser %}
-        <li><a href="{%  url 'auctionListBanned' %}">List banned auctions</a></li>
-        <li><a href="/admin/">Administrator panel</a></li>
-    {% endif %}
-</ul>
+        {% if user.is_superuser %}
+            <li><a href="{%  url 'auctionListBanned' %}">List banned auctions</a></li>
+            <li><a href="/admin/">Administrator panel</a></li>
+        {% endif %}
+    </ul>
+</div>

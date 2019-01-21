@@ -1,82 +1,43 @@
-<table class="auction_item">
-    <tr>
-        <td>
-            Title
-        </td>
-        <td>
-            {{ auction.title }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Seller
-        </td>
-        <td>
-            {{ auction.seller_name }}
-        </td>
-    </tr>
-    <tr>
-        <td valign="top">
-            Item description
-        </td>
-        <td>
-            <pre>{{ auction.description }}</pre>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Starting price
-        </td>
-        <td>
-            {{ starting_price }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Number of bids
-        </td>
-        <td>
-            {{ auction.bid_set.count }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Current price
-        </td>
-        <td>
-            {{ current_price }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Highest bid by
-        </td>
-        <td>
-            {{ auction.current_winner_name }}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Auction closing time
-        </td>
-        <td>
-            {% if auction_time_closing %}
-                {{ auction_time_closing }}
-            {% else %}
-                {{ auction.time_closing }}
-            {% endif %}
-        </td>
-    </tr>
-    <tr>
-        <td>
-            Posted on
-        </td>
-        <td>
-            {% if auction_time_posted %}
-                {{ auction_time_posted }}
-            {% else %}
-                {{ auction.time_posted }}
-            {% endif %}
-        </td>
-    </tr>
-</table>
+{% load static %}
+<link rel="stylesheet" href="{% static 'auction_table.css' %}">
+
+<section class="auction-grid">
+    <div class="grid-name">Title</div>
+    <div class="grid-value">{{ auction.title }}</div>
+
+    <div class="grid-name">Seller</div>
+    <div class="grid-value">{{ auction.seller_name }}</div>
+
+    <div class="grid-name">Item description</div>
+    <div class="grid-value">{{ auction.description }}</div>
+
+    <div class="grid-name">Starting price</div>
+    <div class="grid-value">{{ starting_price }}</div>
+
+    <div class="grid-name">Number of bids</div>
+    <div class="grid-value">{{ auction.bid_set.count }}</div>
+
+    <div class="grid-name">Current price</div>
+    <div class="grid-value">{{ current_price }}</div>
+
+    <div class="grid-name">Highest bid by</div>
+    <div class="grid-value">{{ auction.current_winer_name }}</div>
+
+    <div class="grid-name">Closing time</div>
+    <div class="grid-value">
+        {% if auction_time_closing %}
+            {{ auction_time_closing }}
+        {% else %}
+            {{ auction.time_closing }}
+        {% endif %}
+    </div>
+
+    <div class="grid-name">Posted on</div>
+    <div class="grid-value">
+        {% if auction_time_posted %}
+            {{ auction_time_posted }}
+        {% else %}
+            {{ auction.time_posted }}
+        {% endif %}
+    </div>
+</section>

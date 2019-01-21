@@ -19,17 +19,19 @@
 <body>
 
 <div id="top">
-    {% include "top.html" %}
+    <div class="site_name">
+        Yet Another Auction Site
+    </div>
+        {% include 'searchbox.html' %}
 </div>
 
 <div id="bottom">
-    <div>
-        <div id="navigation">
-            {% include "navigation.html" %}
-        </div>
-        {% include 'currency_picker.html' %}
+    <div id="bottom_side">
+        {% include "navigation.html" %}
+        {% include 'currencypicker.html' %}
+        {% include 'loginbox.html' %}
     </div>
-    <div id="content">
+    <div id="bottom_content">
         {{ global.session.currency }}
         {% if info_message %}
             <p class="info_message">{{ info_message }}</p>

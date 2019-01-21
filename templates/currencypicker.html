@@ -1,0 +1,14 @@
+<div id="currency_picker">
+    <form action="{% url 'change_currency' %}" method="POST">
+        {% csrf_token %}
+        View listings in:
+        <select name="currency" id="currency" onchange="this.form.submit()">
+            {% for code in request.session.currencies %}
+                <option value="{{ code }}"
+                        {% if code == request.session.currency %}
+                        selected
+                        {% endif %}>{{ code }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>

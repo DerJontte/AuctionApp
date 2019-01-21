@@ -43,15 +43,15 @@ class BrowseAuctions(View):
 
         info_message = messages.get('info_message')
         error_message = messages.get('error_message')
-        return render(request, 'view_auction_item.html', {'auction': auction,
+        return render(request, 'view_auction.html', {'auction': auction,
                                                           'currency': context['currency'],
                                                           'rate': context['rate'],
                                                           'starting_sum': context['starting_sum'],
                                                           'starting_price': context['starting_price'],
                                                           'current_price': context['current_price'],
-                                                          'info_message': info_message,
-                                                          'error_message': error_message,
-                                                          'ongoing': ongoing})
+                                                     'info_message': info_message,
+                                                     'error_message': error_message,
+                                                     'ongoing': ongoing})
 
 
 def assert_currency(request):

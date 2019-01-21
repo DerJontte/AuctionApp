@@ -17,7 +17,7 @@ class EditAuction(View):
         owner = request.user.id == auction.seller_id
         if request.user.is_authenticated and not owner:
             error_message = 'You do not have permission to edit this auction.'
-            return render(request, 'view_auction_item.html', {'auction': auction,
+            return render(request, 'view_auction.html', {'auction': auction,
                                                               'owner': owner,
                                                               'error_message': error_message})
         request.session['to_update'] = query
@@ -40,7 +40,7 @@ class EditAuction(View):
         stripped = split('edit', request.META['HTTP_REFERER'])[0]
         request.session['override'] = stripped + str(auction.id)
 
-        return render(request, 'view_auction_item.html', {'auction': auction,
+        return render(request, 'view_auction.html', {'auction': auction,
                                                           'owner': owner,
                                                           'error_message': error_message,
                                                           'info_message': info_message})

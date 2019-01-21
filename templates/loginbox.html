@@ -1,11 +1,6 @@
-<div class="site_name">
-    Yet Another Auction Site
-</div>
-
-<div class="login">
-<div class="user_settings">
+<div id="login">
     {% if not user.is_authenticated %}
-        <form action="{% url 'login' %}" method="POST" class="login_form">
+        <form action="{% url 'login' %}" method="POST" id="login_form">
             {% csrf_token %}
             <input id="username" name="username" type="text" placeholder="Username" />
             <input id="password" name="password" type="password" placeholder="Password"/>
@@ -18,7 +13,7 @@
         </div>
         <div class="buttons">
             <a href="{% url 'edit_account' %}"><button>Edit account</button></a>
-            <form action="{% url 'logout' %}" method="POST" style="padding-left: 10px">
+            <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}
                 <button type="submit">
                     Log out
@@ -26,14 +21,4 @@
             </form>
         </div>
     {% endif %}
-</div>
-
-    <div class="search">
-        <form action="{% url 'search' %}" method="POST" class="search">
-            {% csrf_token %}
-            <input id="search" name="search" type="text" />
-            <button type="submit">Search</button>
-        </form>
-    </div>
-
 </div>
