@@ -40,13 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cron',
     'rest_framework',
-    'auctionApp.apps.AunctionappConfig',
+    'auctionApp.apps.AunctionAppConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -131,9 +130,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-# Session expiration in seconds and whether session expires X seconds after login or last activity
-SESSION_EXPIRE_SECONDS = 3600  # 1 hour
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 # File backend for the emails to users
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'

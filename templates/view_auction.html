@@ -1,32 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <script>
-        function goBack(){
-            if (document.referrer.endsWith("{% url 'auctions' %}") || document.referrer.endsWith("{% url 'search' %}")) {
-                window.history.back();
-            } else {
-                window.location.href = {% url 'auctions' %};
-            }
-        }
-    </script>
+{% include 'auction_item_grid.html' %}
 
-    {% include 'auction_table.html' %}
-
-    <p id="auction-buttons">
-        {% if user.is_authenticated %}
-            {% if user.id == auction.seller_id %}
-                <a href="{% url 'auctionEdit' auction.hash_id %}"><button>Edit auction</button></a>
-            {% else %}
-                {% if user.id != auction.current_winner_id and ongoing %}
-                    {% include 'bidding_form.html' %}
-                {% endif %}
-            {% endif %}
+<div id="auction-buttons">
+    {% if user.id == auction.seller_id %}
+        <a href="{% url 'auctionEdit' auction.id %}"><button>Edit auction</button></a>
+    {% else %}
+    {% if user.is_authenticated and user.id != auction.current_winner_id %}
+            {% include 'bidding_form.html' %}
         {% endif %}
+    {% endif %}
 
-        <button onclick="goBack()">Back to listing</button>
-        {% if user.is_superuser %}
-            {% include 'item_admin.html' %}
-        {% endif %}
-    </p>
+    <a href="{% url 'home' %}"><button>Back to listing</button></a>
+    {% if user.is_superuser %}
+        {% include 'item_admin.html' %}
+    {% endif %}
+</div>
 {% endblock %}

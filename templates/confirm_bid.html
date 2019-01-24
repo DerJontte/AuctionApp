@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="error_message">
+        {{ question }}
+    </div>
+    <br>
     <form action="{%  url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
         {% csrf_token %}
-        <table class="auction_item">
+        <table>
             <tr>
                 <td>
                     Title
@@ -29,13 +33,9 @@
                 </td>
             </tr>
         </table>
-        <br><br>
-        <div class="error_message">
-            {{ question }}
-            <br><br>
-            <input type="hidden" name="bid" value="{{ bid }}">
-            <button type="submit" name="action" value="confirm">Yes</button>
-            <button type="submit" name="action" value="decline">Nope</button>
-        </div>
+        <br>
+        <input type="hidden" name="bid" value="{{ bid }}">
+        <button type="submit" name="action" value="confirm">Yes</button>
+        <button type="submit" name="action" value="decline">Nope</button>
     </form>
 {% endblock %}

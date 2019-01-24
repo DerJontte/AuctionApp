@@ -4,29 +4,19 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views import View
 
-from auctionApp.auctions_browse import BrowseAuctions
+from auctionApp.browse_auctions import Auctions
 from auctionApp.models import *
 
 admin_mail = 'broker@awesomeauctions.com'
 
 
-def referer(request):
-    if 'override' in request.session:
-        go_to = request.session['override']
-        del request.session['override']
-        return redirect(go_to)
-    return redirect(request.META['HTTP_REFERER'])
-
-
-def home(request):
-    return render(request, "home.html", None)
-
-
 class ListBanned(View):
     def get(self, request):
+        if not request.user.is_superuser:
+            return redirect('home')
         auctions = Auction.objects.all().filter(banned=True)
-        return render(request, 'browse.html', {'auctions': auctions,
-                                               'error_message': 'This is a list of banned auctions.'})
+        request.error_message = 'This is a list of banned auctions.'
+        return render(request, 'home.html', {'auctions': auctions})
 
 
 class BanAuction(View):
@@ -49,7 +39,8 @@ class BanAuction(View):
                 if bidder.email not in recipients:
                     recipients.append(bidder.email)
             send_mail(subject, message, admin_mail, recipients, fail_silently=False)
-            return BrowseAuctions.fetch_auction(request, number, error_message='Auction banned.')
+            request.error_message='Auction banned.'
+            return Auctions.fetch_auction(request, number)
 
         if request.POST['action'] == 'Unban':
             auction = Auction.objects.get(id=number)
@@ -61,18 +52,12 @@ class BanAuction(View):
             message = 'Your auction %d: "%s" has been unbanned and can be bid on again.' % (auction.id, auction.title)
             recipient = auction.seller_email
             send_mail(subject, message, admin_mail, [recipient], fail_silently=False)
-            return BrowseAuctions.fetch_auction(request, number, info_message='Auction unbanned.')
+            request.info_message = 'Auction unbanned.'
+            return Auctions.fetch_auction(request, number)
 
 
 def handler404(request, *args, **argv):
     return redirect('/home/')
-
-
-def get_user_name(id):
-    try:
-        return User.objects.get(id=id)
-    except:
-        return 'User account has been disabled or deleted'
 
 
 def make_slug_hash(input):

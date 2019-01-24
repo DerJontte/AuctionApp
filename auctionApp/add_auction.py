@@ -1,16 +1,14 @@
 from datetime import datetime, timedelta
-
 import pytz
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views import View
-
 from auctionApp.currency import Currency
 from auctionApp.forms import AddAuctionForm
 from auctionApp.models import Auction
-from auctionApp.views import BrowseAuctions, admin_mail, make_slug_hash
+from auctionApp.views import Auctions, admin_mail
 
-auction = Auction
+# auction = Auction
 
 
 class AddAuction(View):
@@ -18,11 +16,10 @@ class AddAuction(View):
 
     def get(self, request):
         if not request.user.is_authenticated:
-            return redirect('home', permanent=True)
+            return redirect('home')
 
         global rate
-        if 'currency' not in request.session:
-            request.session['currency'] = 'EUR'
+        Currency.assert_currency(request)
         currency = request.session['currency']
         rate = Currency.get_rate(currency)
 
@@ -63,16 +60,15 @@ class AddAuction(View):
             time_posted = datetime.now().replace(tzinfo=EET)
 
             global auction
-            auction = Auction(seller_id = request.user.id,
-                              seller_name = request.user.username,
-                              seller_email = request.user.email,
-                              title = title,
-                              description = description,
-                              starting_price = starting_price,
-                              current_price = starting_price,
-                              time_closing = time_closing,
-                              time_posted = time_posted,
-                              hash_id = make_slug_hash(title + description))
+            auction = Auction(seller_id=request.user.id,
+                              seller_name=request.user.username,
+                              seller_email=request.user.email,
+                              title=title,
+                              description=description,
+                              starting_price=starting_price,
+                              current_price=starting_price,
+                              time_closing=time_closing,
+                              time_posted=time_posted)
 
             return render(request, 'confirm_auction.html', {'auction': auction,
                                                             'auction_time_closing': time_closing.strftime('%H:%M %d/%m/%y'),
@@ -85,15 +81,14 @@ class AddAuction(View):
                 if request.session['unsaved_auction']:
                     pass
             except:
-                return BrowseAuctions.get(self, request, error_message='No pending auction or auction has already been added.')
+                request.session.error_message = 'No pending auction or auction has already been added.'
+                return Auctions.get(self, request)
 
             auction.save()
 
-            direct_link = 'http://127.0.0.1:8000/auction/edit/' + str(auction.hash_id)
             message_body = 'Your auction with the title "' + auction.title + '" has been created.\n\n' \
-                                                                                        'The auction will b e open until ' + \
-                           auction.time_closing.strftime(tf) + ' or 5 minutes after the last bid.\n\n' \
-                                                             'You can edit the auction via the direct link ' + direct_link
+                                                                             'The auction will b e open until ' + \
+                           auction.time_closing.strftime(tf) + ' or 5 minutes after the last bid.'
             send_mail('Auction created',
                       message_body,
                       admin_mail,
@@ -102,8 +97,7 @@ class AddAuction(View):
 
             del request.session['unsaved_auction']
 
-            return BrowseAuctions.fetch_auction(request, auction.id, info_message='Auction added')
+            request.session.info_message = 'Auction added'
+            return Auctions.fetch_auction(request, auction.id)
         else:
-            return redirect('auctions')
-
-
+            return redirect('home')

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'user_settings_grid.css' %}">
+
+    <form action="{% url 'changeCurrency' %}" method="POST">
+        {% csrf_token %}
+        <section class="grid">
+            <div class="grid-name">
+                View listings in:
+            </div>
+            <div class="grid-value">
+                <select name="currency" id="currency" onchange="this.form.submit()">
+                    {% for code in request.session.currencies %}
+                        <option value="{{ code }}"
+                                {% if code == request.session.currency %}
+                                selected
+                                {% endif %}>{{ code }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </section>
+    </form>
+
+    <div id="account-settings">
+        {% if user.is_superuser %}
+            <p><strong>You are a superuser!<br>Remember: with great powers come great responsibility.</strong></p>
+        {% endif %}
+        <form action="{% url 'accountSettings' %}" method="POST">
+            {% csrf_token %}
+            <section class="grid">
+                {% for field in form.visible_fields %}
+                    <div class="grid-name">{{ field.label_tag }}</div>
+                    <div class="grid-value">{{ field }}</div>
+                {% endfor %}
+            </section>
+            <input type="submit" value="Save changes">
+        </form>
+    </div>
+{% endblock %}

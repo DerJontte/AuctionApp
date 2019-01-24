@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
 
+from auctionApp.browse_auctions import Auctions
 from auctionApp.currency import Currency
 from auctionApp.forms import AddNewUserForm, EditUserForm
-from auctionApp.views import referer, UserSettings
+from auctionApp.views import UserSettings
 
 
 class AddUser(View):
@@ -16,33 +17,33 @@ class AddUser(View):
         if request.user.is_authenticated:
             return redirect('home')
         signup_form = AddNewUserForm
-        return render(request, "signup.html", {'page_name': 'Sign up',
-                                               'signup_form': signup_form})
+        return render(request, "signup.html", {'signup_form': signup_form})
 
     def post(self, request):
         form = AddNewUserForm(request.POST)
         if form.is_valid():
-            data = form.cleaned_data;
+            data = form.cleaned_data
             username = data['username']
             if not data['password1'] == data['password2']:
-                return render(request, 'edit_account.html', {'form': form,
-                                                             'error_message': 'Passwords do not match'})
+                request.error_message = 'Passwords do not match'
+                return render(request, 'signup.html', {'signup_form': form})
             else:
                 password = make_password(data['password1'])
             email = data['email']
             try:
+                User.objects.get(username=username)
+                request.error_message = "User name is already taken, please choose another name."
+                return render(request, 'signup.html', {'signup_form': form})
+            except:
                 new_user = User(username=username, email=email, password=password)
                 user_settings = UserSettings(id=request.user.id, currency=data['currency'])
                 user_settings.save()
                 new_user.save()
-            except IntegrityError:
-                return render(request, 'signup.html', {'signup_form': form,
-                                                       'error_message': "User name is already taken, please choose another name."})
-            return render(request, 'home.html',
-                          {'info_message': 'New account created for user ' + str(new_user.username)})
+                request.info_message = 'New account created for user ' + str(new_user.username)
+                return Auctions.get(self, request)
         else:
-            return render(request, 'signup.html', {'signup_form': form,
-                                                   'error_message': 'Sorry, something went wrong. Please check all fields and try again.'})
+            request.error_message = 'Sorry, something went wrong. Please check all fields and try again.'
+            return render(request, 'signup.html', {'signup_form': form})
 
 
 class EditUser(View):
@@ -53,9 +54,9 @@ class EditUser(View):
         if not request.user.is_authenticated:
             return redirect('home')
         form = EditUserForm(initial={'email': request.user.email})
-        return render(request, "edit_account.html", {'page_name': 'Edit account information',
-                                                     'form': form,
-                                                     'options': options})
+        return render(request, "user_settings.html", {'page_name': 'Edit account information',
+                                                      'form': form,
+                                                      'options': options})
 
     def post(self, request):
         form = EditUserForm(request.POST)
@@ -85,10 +86,10 @@ class EditUser(View):
                             error_message = 'New password cannot be the same as old password.'
                     else:
                         error_message = 'Passwords do not match'
-            return render(request, 'edit_account.html', {'form': form,
+            return render(request, 'user_settings.html', {'form': form,
                                                          'error_message': error_message,
                                                          'info_message': info_message,
-                                                         'options': options,})
+                                                         'options': options, })
 
 
 class ChangeCurrency(View):
@@ -102,4 +103,4 @@ class ChangeCurrency(View):
             else:
                 usersettings = UserSettings(id=request.user.id, currency=currency)
             usersettings.save()
-        return referer(request)
+        return redirect(request.META['HTTP_REFERER'])

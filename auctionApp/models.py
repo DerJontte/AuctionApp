@@ -8,7 +8,6 @@ class UserSettings(models.Model):
     currency = models.CharField(max_length=3, null=True, blank=True)
 
 
-
 class Auction(models.Model):
     seller_id = models.IntegerField()
     seller_name = models.CharField(max_length=20)
@@ -21,7 +20,6 @@ class Auction(models.Model):
     current_winner_name = models.CharField(max_length=20, default='No bids yet.')
     time_posted = models.DateTimeField()
     time_closing = models.DateTimeField()
-    hash_id = models.CharField(max_length=256)
     active = models.BooleanField(default=True)
     banned = models.BooleanField(default=False)
     resolved = models.BooleanField(default=False)

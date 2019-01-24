@@ -12,8 +12,10 @@ body {
     background-color: dimgrey;
     font-family: sans-serif;
     font-size: 14px;
-    width: 100%;
+    width: 95%;
     max-width: 1024px;
+    min-width: 640px;
+    height: 85vh;
     border: 3px dashed black;
 }
 
@@ -22,18 +24,24 @@ body {
     padding-right: 20px;
 }
 
+#account-settings p {
+    text-align: center;
+    color: red;
+}
+
 button {
-    margin-top: 2px;
+    margin: 0;
     width: 8em;
 }
 
 #top {
     background-color: beige;
+    height: 100px;
     padding-left: 10px;
     padding-right: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     color: #000;
     border-bottom: 1px solid black;
 }
@@ -48,9 +56,9 @@ button {
     }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 640px) {
     .site_name {
-        font-size: 26px;
+        font-size: 37px;
     }
 }
 
@@ -58,8 +66,10 @@ button {
     padding-top: 20px;
     padding-left: 10px;
     display: flex;
-    height: 90vh;
-    background-color: beige;}
+    height: calc(100% - 100px);
+    overflow: auto;
+    background-color: beige;
+}
 
 #bottom_side div {
     margin-bottom: 5px;
@@ -76,7 +86,7 @@ button {
     border: 1px dashed black;
 }
 
-#navigation a, ul {
+a, ul {
     padding: 0;
     color: black;
     text-decoration: none;
@@ -108,43 +118,44 @@ button {
     font-size: 14px;
 }
 
-.buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-#login {
-    margin-top: 40px;
-}
-
-#login_form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-#login button {
-    width: 8em;
-}
-
 .search input {
-    width: 160px;
+    width: 100%;
+    margin-bottom: 1px;
 }
 
-.search button {
-    width: initial;
+.search ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-style: italic;
 }
 
-#currency_picker {
-    width: 160px;
+.search :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    font-style: italic;
 }
 
-#currency {
-    border-color: rgba(0, 0, 0, 0);
-    background-color: rgba(0, 0, 0, 0);
+.search ::-ms-input-placeholder { /* Microsoft Edge */
+    font-style: italic;
 }
 
 th, td {
     text-align: center;
+}
+
+.truncate {
+    max-width: 0px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#item-description {
+    text-align: justify;
+    padding-right: 10px;
+}
+
+.navigation-button {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+#username {
+    margin-bottom: 5px;
 }

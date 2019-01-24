@@ -1,10 +1,26 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'loginbox.css' %}">
+
 <div id="login">
-    {% if user.is_authenticated %}
-        <div>
+    {% if not user.is_authenticated %}
+        <form action="{% url 'login' %}" method="POST" id="login-form">
+            {% csrf_token %}
+            <div id="login-inputs">
+                <input id="username" name="username" type="text" placeholder="Username" />
+                <input id="password" name="password" type="password" placeholder="Password"/>
+            </div>
+        </form>
+        <div id="login-buttons">
+            <button type="submit" form="login-form">Login</button>
+            <a href="{% url 'signup' %}"><button>Register</button></a>
+        </div>
+
+    {% else %}
+        <div id="username">
             You are logged in as: {{ user }}
         </div>
-        <div class="buttons">
-            <a href="{% url 'edit_account' %}"><button>Edit account</button></a>
+        <div id="login-buttons">
+            <a href="{% url 'accountSettings' %}"><button>Edit account</button></a>
             <form action="{% url 'logout' %}" method="POST">
                 {% csrf_token %}
                 <button type="submit">
@@ -12,14 +28,5 @@
                 </button>
             </form>
         </div>
-
-    {% else %}
-        <form action="{% url 'login' %}" method="POST" id="login_form">
-            {% csrf_token %}
-            <input id="username" name="username" type="text" placeholder="Username" />
-            <input id="password" name="password" type="password" placeholder="Password"/>
-            <button type="submit">Login</button>
-        </form>
-        <a href="{% url 'signup' %}"><button>Register</button></a>
     {% endif %}
 </div>

@@ -15,21 +15,15 @@
             return false;
         }
     }
-
-    function updateCur(){
-        var input = document.getElementById("new_bid")
-        var output = document.getElementById("converted");
-        output.innerHTML = (input.value * {{ rate }}).toFixed(2)
-    }
 </script>
 
 {% if auction.active and not auction.banned %}
-<form action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
-    {% csrf_token %}
-    <input id="new_bid" name="new_bid" value="{{ auction.current_price }}" oninput="updateCur()" size="3" style="text-align: center; padding-right: 5px"/> EUR
-    {% if currency != 'EUR' %}
-    = <h id="converted">{{ starting_sum }} </h> {{ currency }}
-    {% endif %}
-    <input type="submit" name="action" value="Place bid">
-</form><br>
+    <form action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <input id="starting_price" name="starting_price" value="{{ auction.current_price }}" oninput="updateCur({{ rate }})" size="3" style="text-align: center; padding-right: 5px"/> EUR
+        {% if currency != 'EUR' %}
+            = <span id="converted">{{ starting_sum }} </span> {{ currency }}
+        {% endif %}
+        <input type="submit" name="action" value="Place bid">
+    </form>
 {% endif %}

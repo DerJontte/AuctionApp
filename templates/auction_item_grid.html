@@ -1,7 +1,7 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'auction_table.css' %}">
 
-<section class="auction-grid">
+<link rel="stylesheet" href="{% static 'view_auction.css' %}">
+<section class="grid">
     <div class="grid-name">Title</div>
     <div class="grid-value">{{ auction.title }}</div>
 
@@ -9,7 +9,7 @@
     <div class="grid-value">{{ auction.seller_name }}</div>
 
     <div class="grid-name">Item description</div>
-    <div class="grid-value">{{ auction.description }}</div>
+    <div class="grid-value" id="item-description">{{ auction.description }}</div>
 
     <div class="grid-name">Starting price</div>
     <div class="grid-value">{{ starting_price }}</div>
@@ -20,24 +20,16 @@
     <div class="grid-name">Current price</div>
     <div class="grid-value">{{ current_price }}</div>
 
-    <div class="grid-name">Highest bid by</div>
-    <div class="grid-value">{{ auction.current_winer_name }}</div>
+    <div class="grid-name">Highest bid by user</div>
+    <div class="grid-value">{{ auction.current_winner_name }}</div>
 
     <div class="grid-name">Closing time</div>
     <div class="grid-value">
-        {% if auction_time_closing %}
-            {{ auction_time_closing }}
-        {% else %}
-            {{ auction.time_closing }}
-        {% endif %}
+        {{ auction.time_closing }}
     </div>
 
     <div class="grid-name">Posted on</div>
     <div class="grid-value">
-        {% if auction_time_posted %}
-            {{ auction_time_posted }}
-        {% else %}
-            {{ auction.time_posted }}
-        {% endif %}
+        {{ auction.time_posted }}
     </div>
 </section>

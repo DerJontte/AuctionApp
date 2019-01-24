@@ -5,14 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="{% static 'scripts.js' %}"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        {% if page_name %}
-            {{ page_name }}
-        {% else %}
-            Awesome auctions!
-        {% endif %}
+        Yet Another Auction Site
     </title>
 </head>
 
@@ -20,24 +18,24 @@
 
 <div id="top">
     <div class="site_name">
-        Yet Another Auction Site
+        <a href="{% url 'home' %}">Yet Another Auction Site</a>
     </div>
-        {% include 'searchbox.html' %}
+    {% include 'loginbox.html' %}
 </div>
 
 <div id="bottom">
     <div id="bottom_side">
-        {% include "navigation.html" %}
-        {% include 'currencypicker.html' %}
-        {% include 'loginbox.html' %}
+        <a href="{% url 'home' %}"><button class="navigation-button">Front page</button></a>
+        <a href="{% url 'auctionAdd' %}"><button class="navigation-button">Add new auction</button></a>
+        {% include 'searchbox.html' %}
+        {% include "admin_controls.html" %}
     </div>
     <div id="bottom_content">
-        {{ global.session.currency }}
-        {% if info_message %}
-            <p class="info_message">{{ info_message }}</p>
+        {% if request.info_message %}
+            <p class="info_message">{{ request.info_message }}</p>
         {% endif %}
-        {% if error_message %}
-            <p class="error_message">{{ error_message }}</p>
+        {% if request.error_message %}
+            <p class="error_message">{{ request.error_message }}</p>
         {% endif %}
         {% block content %}
         {% endblock %}

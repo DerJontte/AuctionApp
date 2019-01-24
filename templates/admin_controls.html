@@ -1,0 +1,6 @@
+{% if user.is_superuser %}
+    <ul>
+        <li><a href="{%  url 'auctionListBanned' %}">List banned auctions</a></li>
+        <li><a href="/admin/">Administrator panel</a></li>
+    </ul>
+{% endif %}

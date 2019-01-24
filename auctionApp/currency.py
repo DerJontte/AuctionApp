@@ -1,12 +1,15 @@
 from urllib import request
-import json
-
-import pytz
-
 from auctionApp.models import ExchangeRate
-import datetime
+import json, datetime, pytz
+
 
 class Currency:
+    def assert_currency(request):
+        if 'currency' not in request.session:
+            request.session['currency'] = 'EUR'
+        if 'currencies' not in request.session:
+            request.session['currencies'] = Currency.code_list()
+
     def exchange(input, code):
         return round(input * Currency.get_rate(code), 2)
 
@@ -26,11 +29,10 @@ class Currency:
                 keylist.append(key.code)
         return keylist
 
-    def fetch_rates():
+    def fetch_rates(*self):
         url = 'http://data.fixer.io/api/latest?access_key=5833765f3462250964a319f06fd6b3d1&format=1'
         response = request.urlopen(url)
         data = response.read()
-        text = data.decode('utf-8')
         parsed = json.loads(data)
         for rate in parsed['rates'].items():
                 tosave = ExchangeRate(code=rate[0], rate=rate[1])

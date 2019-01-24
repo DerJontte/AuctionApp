@@ -4,9 +4,10 @@
     Do you want to save this auction?<br><br>
     <form action="{% url 'auctionAdd' %}" method="POST">
         {% csrf_token %}
-        {% include 'auction_table.html' %}
-        <br>
-        <input type="submit" name="confirmed" value="Yes">
-        <input type="submit" name="confirmed" value="No">
+        {% include 'auction_item_grid.html' %}
+        <div id="auction-buttons">
+            <input type="submit" name="confirmed" value="Yes">
+            <input type="submit" name="confirmed" value="No">
+        </div>
     </form>
- {% endblock %}
+{% endblock %}

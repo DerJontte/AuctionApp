@@ -1,0 +1,16 @@
+.grid {
+    display: grid;
+    grid-template-columns: 200px 200px;
+}
+
+.grid-name {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.grid-value {
+    grid-column: 2;
+    margin-bottom: 5px;
+}

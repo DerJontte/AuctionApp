@@ -7,10 +7,11 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.views import View
 
-from auctionApp.auctions_browse import BrowseAuctions
+from auctionApp.browse_auctions import Auctions
 from auctionApp.currency import Currency
 from auctionApp.models import Auction
-from auctionApp.views import referer, admin_mail
+from auctionApp.views import admin_mail
+
 
 class BidAuction(View):
     def get(self, request, number):
@@ -28,11 +29,11 @@ class BidAuction(View):
         elif request.POST['action'] == 'confirm':
             return self.confirm_bid(request, number)
         else:
-            return referer(request)
+            return redirect(request.META['HTTP_REFERER'])
 
     def place_bid(self, request, number, currency):
         if request.user.is_authenticated:
-            new_bid = float(request.POST['new_bid'])
+            new_bid = float(request.POST['starting_price'])
             auction = Auction.objects.get(id=number)
             if request.user.id == auction.current_winner_id:
                 # This is a request that should not be accessible through the app, so a simple 403 will suffice
@@ -51,9 +52,6 @@ class BidAuction(View):
             return HttpResponseForbidden('User not logged in')
 
     def confirm_bid(self, request, number):
-        error_message = None
-        info_message = None
-
         with transaction.atomic():
             auction = Auction.objects.select_for_update().get(id=number)
 
@@ -90,22 +88,20 @@ class BidAuction(View):
                     # mean that there is less than 5 minutes left of the auction. If that's the case, the auction
                     # will be extended to end 5 minutes after the last bid.
                     diff = int(closing_time) - int(current_time)
-                    print ("Closing time: ", int(closing_time), " Current time: ", int(current_time))
-                    print("Diff: ", diff)
                     if diff < 500:
                         auction.time_closing = datetime.now() + timedelta(seconds=300)
                     auction.save()
-                    info_message = 'Your bid has been registered'
+                    request.info_message = 'Your bid has been registered'
                     success = True
                 else:
                     success = False
                     if new_bid <= auction.current_price:
-                        error_message = 'Bid could not be registered: an older bid is higher.'
+                        request.error_message = 'Bid could not be registered: an older bid is higher.'
                     if current_time > closing_time:
-                        error_message = 'Bid could not be registered: auction deadline has passed.'
+                        request.error_message = 'Bid could not be registered: auction deadline has passed.'
             else:
                 success = False
-                error_message = 'Bid was not registered: Auction description has been changed. Please see new description before bidding again.'
+                request.error_message = 'Bid was not registered: Auction description has been changed. Please see new description before bidding again.'
 
         if success:
             if old_winner_email != None:
@@ -119,7 +115,7 @@ class BidAuction(View):
                           [old_winner_email],
                           fail_silently=False)
 
-            to_seller = 'A new bid has been registered in your auction "' + str(auction.title) + '". The new highest bid is ' + str(auction.current_price) + ' and was made by the user ' \
+            to_seller = 'A new bid has been registered for your auction "' + str(auction.title) + '". The new highest bid is ' + str(auction.current_price) + ' and was made by the user ' \
                         + str(new_winner) + '.\n\nYou can view your auction at the adress ' + str(request.META['HTTP_REFERER'])
 
             send_mail('A new bid has been registered',
@@ -127,4 +123,5 @@ class BidAuction(View):
                       admin_mail,
                       [seller_email],
                       fail_silently=False)
-        return BrowseAuctions.fetch_auction(request, number, info_message=info_message, error_message=error_message)
+
+        return Auctions.fetch_auction(request, number)
