@@ -13,8 +13,8 @@ class EditAuction(View):
             return redirect('home')
         request.session['to_update'] = number
         form = AddAuctionForm(auction)
-        return render(request, 'auction_item_edit.html', {'form': form,
-                                                          'auction_id': number})
+        return render(request, 'auction_edit.html', {'form': form,
+                                                     'auction_id': number})
 
     def post(self, request, number):
         with transaction.atomic():
@@ -26,4 +26,6 @@ class EditAuction(View):
             else:
                 request.error_message = 'Error updating auction.'
 
-        return render(request, 'view_auction.html', {'auction': auction})
+        auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
+        auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
+        return render(request, 'auction_item_view.html', {'auction': auction})

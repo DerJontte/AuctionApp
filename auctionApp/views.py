@@ -16,7 +16,7 @@ class ListBanned(View):
             return redirect('home')
         auctions = Auction.objects.all().filter(banned=True)
         request.error_message = 'This is a list of banned auctions.'
-        return render(request, 'home.html', {'auctions': auctions})
+        return render(request, 'auction_listing.html', {'auctions': auctions})
 
 
 class BanAuction(View):

@@ -37,5 +37,5 @@
     width: var(--total-width);
     margin-top: 1em;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }

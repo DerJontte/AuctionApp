@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pytz
+from django.core import serializers
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views import View
@@ -33,7 +34,7 @@ class AddAuction(View):
         else:
             form = AddAuctionForm
 
-        return render(request, 'add_auction.html', {'form': form,
+        return render(request, 'auction_add.html', {'form': form,
                                                     'rate': rate,
                                                     'min_date': min_date,
                                                     'max_date': max_date})
@@ -70,25 +71,25 @@ class AddAuction(View):
                               time_closing=time_closing,
                               time_posted=time_posted)
 
-            return render(request, 'confirm_auction.html', {'auction': auction,
-                                                            'auction_time_closing': time_closing.strftime('%H:%M %d/%m/%y'),
-                                                            'auction_time_posted': time_posted.strftime('%H:%M %d/%m/%y'),
-                                                            'starting_price': starting_price,
-                                                            'seller_name': request.user.username})
+            request.session['time_posted'] = auction.time_posted.__str__()
+            request.session['time_closing'] = auction.time_closing.__str__()
+            auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
+            auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
+
+            return render(request, 'auction_confirm.html', {'auction': auction})
 
         if request.POST['confirmed'] == 'Yes':
-            try:
-                if request.session['unsaved_auction']:
-                    pass
-            except:
-                request.session.error_message = 'No pending auction or auction has already been added.'
+            if 'unsaved_auction' not in request.session:
+                request.error_message = 'No pending auction or auction has already been added.'
                 return Auctions.get(self, request)
 
+            auction.time_posted = request.session['time_posted']
+            auction.time_closing = request.session['time_closing']
             auction.save()
 
             message_body = 'Your auction with the title "' + auction.title + '" has been created.\n\n' \
                                                                              'The auction will b e open until ' + \
-                           auction.time_closing.strftime(tf) + ' or 5 minutes after the last bid.'
+                           auction.time_closing + ' or 5 minutes after the last bid.'
             send_mail('Auction created',
                       message_body,
                       admin_mail,
@@ -99,5 +100,3 @@ class AddAuction(View):
 
             request.session.info_message = 'Auction added'
             return Auctions.fetch_auction(request, auction.id)
-        else:
-            return redirect('home')

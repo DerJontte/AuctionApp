@@ -1,6 +1,6 @@
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'view_auction.css' %}">
+<link rel="stylesheet" href="{% static 'auction_item_grid.css' %}">
 <section class="grid">
     <div class="grid-name">Title</div>
     <div class="grid-value">{{ auction.title }}</div>
@@ -12,13 +12,13 @@
     <div class="grid-value" id="item-description">{{ auction.description }}</div>
 
     <div class="grid-name">Starting price</div>
-    <div class="grid-value">{{ starting_price }}</div>
+    <div class="grid-value">{{ auction.starting_price }}</div>
 
     <div class="grid-name">Number of bids</div>
     <div class="grid-value">{{ auction.bid_set.count }}</div>
 
     <div class="grid-name">Current price</div>
-    <div class="grid-value">{{ current_price }}</div>
+    <div class="grid-value">{{ auction.current_price }}</div>
 
     <div class="grid-name">Highest bid by user</div>
     <div class="grid-value">{{ auction.current_winner_name }}</div>

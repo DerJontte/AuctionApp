@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'auction_add_grid.css' %}">
+
+    <form id="auction_form" action="{% url 'auctionAdd' %}" method="POST">
+        {% csrf_token %}
+        {% if "date" in error.values %}<span style="color: red; ">Errors in form, please fix items marked with red.</span>{% endif %}<br><br>
+
+        <section class="grid">
+            <div class="grid-name">{{ form.title.label_tag }}</div>
+            <div class="grid-value">{{ form.title }}</div>
+
+            <div class="grid-name">{{ form.description.label_tag }}</div>
+            <div class="grid-value">{{ form.description }}</div>
+
+            <div class="grid-name">{{ form.starting_price.label_tag }}</div>
+            <div class="grid-value">
+                <input type="text" name="starting_price" id="starting_price" value="0" oninput="updateCur({{ rate }})">
+                {% if request.session.currency != 'EUR' %}
+                    &nbsp;EUR =&nbsp;<h id="converted"> 0 </h>&nbsp;{{ request.session.currency }}
+                {% endif %}
+            </div>
+
+            <div class="grid-name">End date:</div>
+            <div class="grid-value">
+                <input type="datetime-local" id="end_datetime"
+                       name="end_datetime" value="{{ min_date }}"
+                       min="{{ min_date }}" max="{{ max_date }}" />
+                {{ form.date }}
+            </div>
+        </section>
+    </form>
+    <button type="submit" form="auction_form">Add</button>
+{% endblock %}

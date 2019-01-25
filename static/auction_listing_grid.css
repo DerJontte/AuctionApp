@@ -1,0 +1,46 @@
+.grid {
+    display: grid;
+    grid-template-columns: 150px 150px 130px 120px 120px;
+}
+
+.grid-name {
+    grid-column: 1;
+}
+
+.grid-description {
+    grid-column: 2;
+}
+
+.grid-current-price {
+    grid-column: 3;
+    flex-direction: column;
+}
+
+.grid-closing-time {
+    grid-column: 4;
+}
+
+.grid-seller {
+    grid-column: 5;
+}
+
+[class*="grid-"] {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    max-height: 3em;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.truncate {
+    max-height: inherit;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.bold {
+    font-weight: bold;
+}

@@ -2,7 +2,11 @@
 {% load static %}
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'user_settings_grid.css' %}">
+    <link rel="stylesheet" href="{% static 'account_settings_grid.css' %}">
+
+    {% if user.is_superuser %}
+        <p><strong>You are a superuser!<br>Remember: with great powers come great responsibility.</strong></p>
+    {% endif %}
 
     <form action="{% url 'changeCurrency' %}" method="POST">
         {% csrf_token %}
@@ -24,10 +28,7 @@
     </form>
 
     <div id="account-settings">
-        {% if user.is_superuser %}
-            <p><strong>You are a superuser!<br>Remember: with great powers come great responsibility.</strong></p>
-        {% endif %}
-        <form action="{% url 'accountSettings' %}" method="POST">
+        <form id="user_settings" action="{% url 'accountSettings' %}" method="POST">
             {% csrf_token %}
             <section class="grid">
                 {% for field in form.visible_fields %}
@@ -35,7 +36,7 @@
                     <div class="grid-value">{{ field }}</div>
                 {% endfor %}
             </section>
-            <input type="submit" value="Save changes">
         </form>
+        <button type="submit" form="user_settings">Save changes</button>
     </div>
 {% endblock %}

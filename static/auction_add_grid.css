@@ -1,6 +1,6 @@
 .grid {
     display: grid;
-    grid-template-columns: 200px 200px;
+    grid-template-columns: 100px 300px;
 }
 
 .grid-name {
@@ -12,5 +12,15 @@
 
 .grid-value {
     grid-column: 2;
+    display: flex;
+    align-items: center;
     margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+}
+
+#starting_price {
+    width: 50%;
 }

@@ -20,11 +20,9 @@ class Auctions(View):
             auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
             if currency != 'EUR':
                 converted_price = Currency.exchange(auction.current_price, currency)
-                auction.current_price = "%.2f EUR (%.2f %s)" % (auction.current_price, converted_price, currency)
-            else:
-                auction.current_price = "%.2f EUR" % auction.current_price
+                auction.converted_price = "(%.2f %s)" % (converted_price, currency)
 
-        return render(request, 'home.html', {'auctions': auctions})
+        return render(request, 'auction_listing.html', {'auctions': auctions})
 
     def fetch_auction(request, number):
         auction = Auction.objects.get(id=number)
@@ -36,7 +34,7 @@ class Auctions(View):
         auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
         auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
 
-        return render(request, 'view_auction.html', {'auction': auction,
+        return render(request, 'auction_item_view.html', {'auction': auction,
                                                      'currency': context['currency'],
                                                      'rate': context['rate'],
                                                      'starting_sum': context['starting_sum'],

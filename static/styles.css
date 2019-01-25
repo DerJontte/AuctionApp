@@ -139,13 +139,6 @@ th, td {
     text-align: center;
 }
 
-.truncate {
-    max-width: 0px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
 #item-description {
     text-align: justify;
     padding-right: 10px;

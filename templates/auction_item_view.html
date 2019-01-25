@@ -8,13 +8,13 @@
         <a href="{% url 'auctionEdit' auction.id %}"><button>Edit auction</button></a>
     {% else %}
     {% if user.is_authenticated and user.id != auction.current_winner_id %}
-            {% include 'bidding_form.html' %}
+            {% include 'bid_form.html' %}
         {% endif %}
     {% endif %}
 
     <a href="{% url 'home' %}"><button>Back to listing</button></a>
     {% if user.is_superuser %}
-        {% include 'item_admin.html' %}
+        {% include 'admin_item_ban.html' %}
     {% endif %}
 </div>
 {% endblock %}

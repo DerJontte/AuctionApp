@@ -1,0 +1,33 @@
+.grid {
+    display: grid;
+    grid-template-columns: 200px 200px;
+}
+
+.grid-name {
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 5px;
+}
+
+.grid-value {
+    grid-column: 2;
+    margin-bottom: 5px;
+}
+
+#account-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#account-settings form {
+    margin-bottom: 10px;
+}
+
+strong {
+    display: flex;
+    text-align: center;
+}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <link rel="stylesheet" href="{% static 'auction_listing_grid.css' %}">
+
+
+    <section class="grid">
+        <div class="grid-name bold">
+            Item name
+        </div>
+        <div class="grid-description bold">
+            Description
+        </div>
+        <div class="grid-current-price bold">
+            Current price
+        </div>
+        <div class="grid-closing-time bold">
+            Closing time
+        </div>
+        <div class="grid-seller bold">
+            Seller
+        </div>
+    </section>
+
+
+    {% for auction in auctions %}
+        <a href="{% url 'home' %}auctions/{{ auction.id }}">
+            <section class="grid">
+                <div class="grid-name">
+                    <div class="truncate">
+                        {{ auction.title }}
+                    </div>
+                </div>
+                <div class="grid-description">
+                    <div class="truncate">
+                        {{ auction.description }}
+                    </div>
+                </div>
+                <div class="grid-current-price">
+                    <div>{{ auction.current_price }} EUR</div>
+                    <div>{{ auction.converted_price }}</div>
+                </div>
+                <div class="grid-closing-time">
+                    {{ auction.time_closing }}
+                </div>
+                <div class="grid-seller">
+                    <div class="truncate">
+                        {{  auction.seller_name }}
+                    </div>
+                </div>
+            </section>
+        </a>
+    {% endfor %}
+
+
+{% endblock %}

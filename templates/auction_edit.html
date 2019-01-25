@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="{% url 'auctionEdit'  %}{{ auction_id }}" method="post">
+    <form id="form_edit" action="{% url 'auctionEdit'  %}{{ auction_id }}" method="post">
         {% csrf_token %}
         <table>
             <tr>
@@ -20,7 +20,7 @@
                     {{ form.description }}
                 </td>
             </tr>
-        </table><br>
-        <input type="submit" value="Save">
+        </table>
     </form>
+    <button type="submit" form="form_edit">Save</button>
 {% endblock %}

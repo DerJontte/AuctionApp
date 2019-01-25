@@ -45,7 +45,7 @@ class BidAuction(View):
                 converted = ''
             question = 'Do you want to bid %s EUR %s on this auction?' % (new_bid, converted)
             request.session['description'] = auction.description
-            return render(request, 'confirm_bid.html', {'auction': auction,
+            return render(request, 'bid_confirm.html', {'auction': auction,
                                                         'bid': float(new_bid),
                                                         'question': question})
         else:

@@ -54,7 +54,7 @@ class EditUser(View):
         if not request.user.is_authenticated:
             return redirect('home')
         form = EditUserForm(initial={'email': request.user.email})
-        return render(request, "user_settings.html", {'page_name': 'Edit account information',
+        return render(request, "account_settings.html", {'page_name': 'Edit account information',
                                                       'form': form,
                                                       'options': options})
 
@@ -81,12 +81,12 @@ class EditUser(View):
                             logout(request)
                             info_message = info_message.__add__(
                                 'Password changed. Please login with your new password.\n')
-                            return render(request, 'home.html', {'info_message': info_message})
+                            return render(request, 'auction_listing.html', {'info_message': info_message})
                         else:
                             error_message = 'New password cannot be the same as old password.'
                     else:
                         error_message = 'Passwords do not match'
-            return render(request, 'user_settings.html', {'form': form,
+            return render(request, 'account_settings.html', {'form': form,
                                                          'error_message': error_message,
                                                          'info_message': info_message,
                                                          'options': options, })

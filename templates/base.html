@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +29,7 @@
         <a href="{% url 'home' %}"><button class="navigation-button">Front page</button></a>
         <a href="{% url 'auctionAdd' %}"><button class="navigation-button">Add new auction</button></a>
         {% include 'searchbox.html' %}
-        {% include "admin_controls.html" %}
+        {% include "admin_controls_nav.html" %}
     </div>
     <div id="bottom_content">
         {% if request.info_message %}
