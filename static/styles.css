@@ -1,5 +1,8 @@
 * {
     box-sizing: border-box;
+    --body-background: #363636;
+    --top-background: #C09F80;
+    --bottom-background: #D7CEC0;
 }
 
 html {
@@ -9,7 +12,7 @@ html {
 }
 
 body {
-    background-color: dimgrey;
+    background-color: var(--body-background);
     font-family: sans-serif;
     font-size: 14px;
     width: 95%;
@@ -31,22 +34,45 @@ body {
 
 button {
     margin: 0;
+    border: 1px solid #565656;
+    background-color: var(--bottom-background);
     width: 8em;
+    height: 1.45em;
+}
+
+button:hover {
+    color: white;
+}
+
+input {
+    padding-left: 5px;
+    border: 1px solid #565656;
 }
 
 #top {
-    background-color: beige;
+    background-color: var(--top-background);
     height: 100px;
     padding-left: 10px;
     padding-right: 10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
-    color: #000;
+    color: #FFFFFF;
     border-bottom: 1px solid black;
 }
 
+#top a {
+    color: inherit;
+    text-shadow:
+            3px 3px 0 rgba(0, 0, 0, 0.2),
+            -1px -1px 0 #000,
+            1px -1px 0 rgba(0, 0, 0, 0.65),
+            -1px 1px 0 #000,
+            1px 1px 0 #000;
+}
+
 .site_name {
+    margin-left: 0.5em;
     font-size: calc(5.8vw);
     text-align: center;
 }
@@ -68,10 +94,10 @@ button {
     display: flex;
     height: calc(100% - 100px);
     overflow: auto;
-    background-color: beige;
+    background-color: var(--bottom-background);
 }
 
-#bottom_side div {
+#bottom-side div {
     margin-bottom: 5px;
 }
 
@@ -93,7 +119,7 @@ a, ul {
     list-style-type: none;
 }
 
-#bottom_content {
+#bottom-content {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -102,17 +128,17 @@ a, ul {
     margin-right: 30px;
 }
 
-.info_message {
+.info-message {
     color: blue;
     font-weight: bold;
 }
 
-.error_message {
+.error-message {
     color: red;
     font-weight: bold;
 }
 
-.text_white {
+.text-white {
     color: white;
     text-decoration: none;
     font-size: 14px;
@@ -120,7 +146,7 @@ a, ul {
 
 .search input {
     width: 100%;
-    margin-bottom: 1px;
+    margin-bottom: 5px;
 }
 
 .search ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -150,5 +176,7 @@ th, td {
 }
 
 #username {
+    color: black;
     margin-bottom: 5px;
+    padding-left: 5px;
 }

@@ -27,16 +27,18 @@
 <div id="bottom">
     <div id="bottom_side">
         <a href="{% url 'home' %}"><button class="navigation-button">Front page</button></a>
-        <a href="{% url 'auctionAdd' %}"><button class="navigation-button">Add new auction</button></a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'auctionAdd' %}"><button class="navigation-button">Add new auction</button></a>
+        {% endif %}
         {% include 'searchbox.html' %}
         {% include "admin_controls_nav.html" %}
     </div>
-    <div id="bottom_content">
+    <div id="bottom-content">
         {% if request.info_message %}
-            <p class="info_message">{{ request.info_message }}</p>
+            <p class="info-message">{{ request.info_message }}</p>
         {% endif %}
         {% if request.error_message %}
-            <p class="error_message">{{ request.error_message }}</p>
+            <p class="error-message">{{ request.error_message }}</p>
         {% endif %}
         {% block content %}
         {% endblock %}

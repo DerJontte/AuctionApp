@@ -18,12 +18,12 @@
 </script>
 
 {% if auction.active and not auction.banned %}
-    <form action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
+    <form id="bid-form" action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
         {% csrf_token %}
         <input id="starting_price" name="starting_price" value="{{ auction.current_price }}" oninput="updateCur({{ rate }})" size="3" style="text-align: center; padding-right: 5px"/> EUR
         {% if currency != 'EUR' %}
             = <span id="converted">{{ starting_sum }} </span> {{ currency }}
         {% endif %}
-        <input type="submit" name="action" value="Place bid">
     </form>
+        <button type="submit" form="bid-form" name="action" value="Place bid">Place bid</button>
 {% endif %}
