@@ -12,13 +12,13 @@
     <div class="grid-value" id="item-description">{{ auction.description }}</div>
 
     <div class="grid-name">Starting price</div>
-    <div class="grid-value">{{ auction.starting_price }}</div>
+    <div class="grid-value">{{ auction.starting_converted }} {{ request.session.currency }}</div>
+
+    <div class="grid-name">Current price</div>
+    <div class="grid-value">{{ auction.current_converted }} {{ request.session.currency }}</div>
 
     <div class="grid-name">Number of bids</div>
     <div class="grid-value">{{ auction.bid_set.count }}</div>
-
-    <div class="grid-name">Current price</div>
-    <div class="grid-value">{{ auction.current_price }}</div>
 
     <div class="grid-name">Highest bid by user</div>
     <div class="grid-value">{{ auction.current_winner_name }}</div>

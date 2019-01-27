@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% include 'auction_item_grid.html' %}
+    {% include 'auction_item_grid.html' %}
 
-<div id="auction-buttons">
-    {% if user.id == auction.seller_id %}
-        <a href="{% url 'auctionEdit' auction.id %}"><button>Edit auction</button></a>
-    {% else %}
-    {% if user.is_authenticated and user.id != auction.current_winner_id %}
-            {% include 'bid_form.html' %}
+    <div id="auction-buttons">
+        {% if user.id == auction.seller_id %}
+            <a href="{% url 'auctionEdit' auction.id %}"><button>Edit auction</button></a>
+        {% else %}
+            {% if user.is_authenticated and user.id != auction.current_winner_id %}
+                {% include 'bid_form.html' %}
+            {% endif %}
         {% endif %}
-    {% endif %}
 
-    <a href="{% url 'home' %}"><button>Back to listing</button></a>
+        <a href="{% url 'home' %}"><button>Back to listing</button></a>
+
+    </div>
     {% if user.is_superuser %}
-        {% include 'admin_item_ban.html' %}
+        {% include 'admin_controls_item.html' %}
     {% endif %}
-</div>
 {% endblock %}

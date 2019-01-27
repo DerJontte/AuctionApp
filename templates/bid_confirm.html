@@ -1,41 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
+    <link rel="stylesheet" href="{% static 'auction_item_grid.css' %}">
+
     <div class="error-message">
         {{ question }}
     </div>
-    <br>
-    <form action="{%  url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>
-                    Title
-                </td>
-                <td>
-                    {{ auction.title }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Seller
-                </td>
-                <td>
-                    {{ auction.seller_name }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Item description
-                </td>
-                <td>
-                    {{ auction.description }}
-                </td>
-            </tr>
-        </table>
-        <br>
+
+    <form id="bid-form" action="{%  url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
         <input type="hidden" name="bid" value="{{ bid }}">
-        <button type="submit" name="action" value="confirm">Yes</button>
-        <button type="submit" name="action" value="decline">Nope</button>
+        {% csrf_token %}
+
+        <section class="grid">
+            <div class="grid-name">Title</div>
+            <div class="grid-value">{{ auction.title }}</div>
+
+            <div class="grid-name">Seller</div>
+            <div class="grid-value">{{ auction.seller_name }}</div>
+
+            <div class="grid-name">Item description</div>
+            <div class="grid-value">{{ auction.description }}</div>
+        </section>
     </form>
+
+    <div id="auction-buttons">
+        <button type="submit" name="confirm" form="bid-form">Yes</button>
+        <button type="submit" name="decline" form="bid-form">Nope</button>
+    </div>
+
 {% endblock %}

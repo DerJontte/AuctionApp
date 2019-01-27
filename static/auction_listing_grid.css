@@ -31,12 +31,12 @@
     align-items: center;
     max-height: 3em;
     padding-bottom: 5px;
+    padding-top: 3px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 #bottom-content a:hover div {
     color: white;
-    padding-top: 0px;
     background-color: var(--top-background);
 }
 

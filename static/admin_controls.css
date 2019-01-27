@@ -1,0 +1,23 @@
+#admin-controls-nav {
+    background-color: rgba(255, 0, 0, 0.1);
+    padding: 5px;
+    width: inherit;
+    margin-top: 30px;
+}
+
+#admin-controls-nav :first-child {
+    margin-top: 0.5em;
+}
+
+#admin-controls-item {
+    background-color: rgba(255, 0, 0, 0.1);
+    padding: 5px;
+    margin-top: 1em;
+    display: flex;
+    align-items: center;
+}
+
+#admin-controls-item form:first-child {
+    margin-left: 10px;
+    margin-right: 10px;
+}

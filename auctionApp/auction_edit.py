@@ -5,15 +5,14 @@ from auctionApp.forms import AddAuctionForm
 from auctionApp.models import Auction
 
 
+# Ready sans comments
 class EditAuction(View):
     def get(self, request, number):
         auction = Auction.objects.get(id=number)
-        owner = request.user.id == auction.seller_id
-        if not owner:
+        if request.user.id is not auction.seller_id:
             return redirect('home')
         request.session['to_update'] = number
-        form = AddAuctionForm(auction)
-        return render(request, 'auction_edit.html', {'form': form,
+        return render(request, 'auction_edit.html', {'form': AddAuctionForm(auction),
                                                      'auction_id': number})
 
     def post(self, request, number):
@@ -28,4 +27,5 @@ class EditAuction(View):
 
         auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
         auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
+
         return render(request, 'auction_item_view.html', {'auction': auction})

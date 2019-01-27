@@ -1,29 +1,14 @@
-<script>
-    function validateForm() {
-        var input = document.getElementById("new_bid")
-        bid = input.value;
-        if (bid <= {{ auction.current_price }}) {
-            alert("New bid must be higher than the current bid.");
-            return false;
-        }
-        if (isNaN(bid)){
-            alert("Please input a number.")
-            return false;
-        }
-        if (bid.includes(".") && bid.split(".")[1].length > 2) {
-            alert("Please use numbers with two decimal places or less.")
-            return false;
-        }
-    }
-</script>
-
 {% if auction.active and not auction.banned %}
-    <form id="bid-form" action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <input id="starting_price" name="starting_price" value="{{ auction.current_price }}" oninput="updateCur({{ rate }})" size="3" style="text-align: center; padding-right: 5px"/> EUR
-        {% if currency != 'EUR' %}
-            = <span id="converted">{{ starting_sum }} </span> {{ currency }}
-        {% endif %}
-    </form>
-        <button type="submit" form="bid-form" name="action" value="Place bid">Place bid</button>
+    {% load static %}
+    <script src="{% static 'validate_bid_form.js' %}"></script>
+    <div id="input-div">
+        <form id="bid-form" action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm({{ auction.current_price }})">
+            {% csrf_token %}
+            <input id="starting_price" name="starting_price" value="{{ auction.current_price }}" oninput="updateCur({{ auction.rate }})" size="3" style="text-align: center; padding-right: 5px"/> EUR
+            {% if request.session.currency != 'EUR' %}
+                = <span id="converted">{{ auction.converted_price }} </span> {{ request.session.currency }}
+            {% endif %}
+        </form>
+        <button type="submit" form="bid-form" name="place-bid">Place bid</button>
+    </div>
 {% endif %}

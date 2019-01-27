@@ -16,7 +16,7 @@
 </head>
 
 <body>
-
+{# The upper part of the app. Contains the site name and login-form. #}
 <div id="top">
     <div class="site_name">
         <a href="{% url 'home' %}">Yet Another Auction Site</a>
@@ -24,26 +24,38 @@
     {% include 'loginbox.html' %}
 </div>
 
+
+{# The lower part of the app with navigation and main content. #}
 <div id="bottom">
-    <div id="bottom_side">
+
+    {# The navigation area and search-box on the left side of the app. #}
+    <div id="bottom-side">
         <a href="{% url 'home' %}"><button class="navigation-button">Front page</button></a>
+
+        {# If the user is authenticated, show the button for adding a new auction. #}
         {% if user.is_authenticated %}
             <a href="{% url 'auctionAdd' %}"><button class="navigation-button">Add new auction</button></a>
         {% endif %}
+
         {% include 'searchbox.html' %}
+        {# If the user is superuser, show controls for administrating auctions #}
         {% include "admin_controls_nav.html" %}
     </div>
+
+    {# The main content area #}
     <div id="bottom-content">
         {% if request.info_message %}
-            <p class="info-message">{{ request.info_message }}</p>
+            <p class="info-message">{{ request.info_message | linebreaksbr }}</p>
         {% endif %}
         {% if request.error_message %}
-            <p class="error-message">{{ request.error_message }}</p>
+            <p class="error-message">{{ request.error_message | linebreaksbr}}</p>
         {% endif %}
+
         {% block content %}
+            {# Different pages create different content in this block #}
         {% endblock %}
+
     </div>
 </div>
-
 </body>
 </html>

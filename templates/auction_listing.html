@@ -38,8 +38,7 @@
                     </div>
                 </div>
                 <div class="grid-current-price">
-                    <div>{{ auction.current_price }} EUR</div>
-                    <div>{{ auction.converted_price }}</div>
+                    <div>{{ auction.current_price }} {{ request.session.currency }}</div>
                 </div>
                 <div class="grid-closing-time">
                     {{ auction.time_closing }}

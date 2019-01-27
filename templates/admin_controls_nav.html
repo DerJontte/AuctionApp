@@ -1,6 +1,9 @@
 {% if user.is_superuser %}
-    <ul>
-        <li><a href="{%  url 'auctionListBanned' %}">List banned auctions</a></li>
-        <li><a href="/admin/">Administrator panel</a></li>
-    </ul>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'admin_controls.css' %}">
+    <div id="admin-controls-nav">
+        Administrator menu
+        <button class="navigation-button" onclick="window.location.href='{%  url 'home' %}{{ '?banned' }}'">List banned auctions</button>
+        <button class="navigation-button" onclick="window.location.href='/admin/'">Administrator panel</button>
+    </div>
 {% endif %}

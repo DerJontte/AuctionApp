@@ -1,8 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from restAPI import views
 
 urlpatterns = [
     path('auctions/', views.auction_list),
     path('auctions/<int:number>', views.auction_detail),
-    path('auctions/search=<slug:query>', views.auction_search),
+    path('auctions/query=<slug:query>', views.auction_search),
 ]

@@ -1,13 +1,9 @@
-from sqlite3 import IntegrityError
-
 from django.contrib.auth import logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
-
-from auctionApp.browse_auctions import Auctions
-from auctionApp.currency import Currency
+from auctionApp.auction__base import Auctions
 from auctionApp.forms import AddNewUserForm, EditUserForm
 from auctionApp.views import UserSettings
 
@@ -16,80 +12,69 @@ class AddUser(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('home')
-        signup_form = AddNewUserForm
-        return render(request, "signup.html", {'signup_form': signup_form})
+        return render(request, "signup.html", {'signup_form': AddNewUserForm})
 
     def post(self, request):
         form = AddNewUserForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-            username = data['username']
-            if not data['password1'] == data['password2']:
-                request.error_message = 'Passwords do not match'
-                return render(request, 'signup.html', {'signup_form': form})
-            else:
-                password = make_password(data['password1'])
-            email = data['email']
-            try:
-                User.objects.get(username=username)
-                request.error_message = "User name is already taken, please choose another name."
-                return render(request, 'signup.html', {'signup_form': form})
-            except:
-                new_user = User(username=username, email=email, password=password)
-                user_settings = UserSettings(id=request.user.id, currency=data['currency'])
-                user_settings.save()
-                new_user.save()
-                request.info_message = 'New account created for user ' + str(new_user.username)
-                return Auctions.get(self, request)
-        else:
-            request.error_message = 'Sorry, something went wrong. Please check all fields and try again.'
+
+        if not form.is_valid():
+            request.error_message = str(form.errors).split("<li>")[2].split("</li>")[0]
             return render(request, 'signup.html', {'signup_form': form})
+
+        data = form.cleaned_data
+        username = data['username']
+
+        new_user = User(username=username, email=data['email'], password=make_password(data['password']))
+        new_user.save()
+
+        user_settings = UserSettings(id=request.user.id, currency=data['currency'])
+        user_settings.save()
+
+        request.info_message = 'New account created for user ' + str(new_user.username)
+        return Auctions.get(self, request)
 
 
 class EditUser(View):
-    global options
-    options = Currency.code_list()
 
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('home')
-        form = EditUserForm(initial={'email': request.user.email})
-        return render(request, "account_settings.html", {'page_name': 'Edit account information',
-                                                      'form': form,
-                                                      'options': options})
+
+        form = EditUserForm()
+        form.initial['email'] = request.user.email
+        return render(request, "account_settings.html", {'form': form})
 
     def post(self, request):
         form = EditUserForm(request.POST)
-        if form.is_valid():
-            info_message = ''
-            error_message = ''
-            user = request.user
-            data = form.cleaned_data
-            email = data['email']
-            password1 = data['new_password1']
-            password2 = data['new_password2']
-            if user.check_password(data['old_password']):
-                if email != request.user.email:
-                    user.email = email
-                    user.save()
-                    info_message = info_message.__add__('Email changed to ' + email + "\n")
-                if password1 and password2:
-                    if password1 == password2:
-                        if not user.check_password(password1):
-                            user.set_password(password1)
-                            user.save()
-                            logout(request)
-                            info_message = info_message.__add__(
-                                'Password changed. Please login with your new password.\n')
-                            return render(request, 'auction_listing.html', {'info_message': info_message})
-                        else:
-                            error_message = 'New password cannot be the same as old password.'
-                    else:
-                        error_message = 'Passwords do not match'
-            return render(request, 'account_settings.html', {'form': form,
-                                                         'error_message': error_message,
-                                                         'info_message': info_message,
-                                                         'options': options, })
+        if not form.is_valid():
+            request.error_message = str(form.errors).split("<li>")[2].split("</li>")[0]
+            return render(request, 'account_settings.html', {'form': form})
+
+        data = form.cleaned_data
+        user = request.user
+        email = data['email']
+        password = data['new_password']
+
+        if not user.check_password(data['old_password']):
+            request.error_message = 'Password error'
+            return render(request, 'account_settings.html', {'form': form})
+
+        request.info_message = ''
+
+        if email != request.user.email:
+            user.email = email
+            user.save()
+            request.info_message += 'Email changed to ' + email + '\n'
+
+        if user.check_password(password):
+            request.error_message = 'New password cannot be the same as old password.'
+        elif password is not '':
+            user.set_password(password)
+            user.save()
+            logout(request)
+            request.info_message += 'Password changed. Please login with your new password.\n'
+            return Auctions.get(None, request)
+        return self.get(request)
 
 
 class ChangeCurrency(View):

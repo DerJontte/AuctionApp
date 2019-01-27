@@ -4,19 +4,9 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.views import View
 
-from auctionApp.browse_auctions import Auctions
 from auctionApp.models import *
 
 admin_mail = 'broker@awesomeauctions.com'
-
-
-class ListBanned(View):
-    def get(self, request):
-        if not request.user.is_superuser:
-            return redirect('home')
-        auctions = Auction.objects.all().filter(banned=True)
-        request.error_message = 'This is a list of banned auctions.'
-        return render(request, 'auction_listing.html', {'auctions': auctions})
 
 
 class BanAuction(View):

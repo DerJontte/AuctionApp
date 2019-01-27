@@ -1,8 +1,12 @@
 * {
     box-sizing: border-box;
+
+    /* Global variables that can be used in stylesheets that are loaded by subpages as well */
     --body-background: #363636;
     --top-background: #C09F80;
     --bottom-background: #D7CEC0;
+
+    --bottom-sde-width: 200px;
 }
 
 html {
@@ -97,19 +101,12 @@ input {
     background-color: var(--bottom-background);
 }
 
-#bottom-side div {
-    margin-bottom: 5px;
+#bottom-side {
+    width: var(--bottom-sde-width);
 }
 
-#navigation {
-    width: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 5em;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: 1px dashed black;
+#bottom-side div {
+    margin-bottom: 5px;
 }
 
 a, ul {
@@ -131,11 +128,14 @@ a, ul {
 .info-message {
     color: blue;
     font-weight: bold;
+    text-align: center;
 }
 
 .error-message {
     color: red;
     font-weight: bold;
+    margin-bottom: 2em;
+    text-align: center;
 }
 
 .text-white {
@@ -179,4 +179,16 @@ th, td {
     color: black;
     margin-bottom: 5px;
     padding-left: 5px;
+}
+
+#input-div {
+    display: flex;
+}
+
+#input-div button {
+    margin-left: 0.5em;
+}
+
+textarea {
+    resize: none;
 }

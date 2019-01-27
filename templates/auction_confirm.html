@@ -7,7 +7,7 @@
         {% include 'auction_item_grid.html' %}
     </form>
     <div id="auction-buttons">
-        <button type="submit" form="confirm_form" name="confirmed" value="Yes">Yes</button>
-        <a href="{% url 'home' %}"><button>No</button></a>
+        <button type="submit" form="confirm_form" name="confirmed">Yes</button>
+        <button type="submit" form="confirm_form" name="unconfirmed">No</button>
     </div>
 {% endblock %}
