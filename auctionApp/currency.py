@@ -3,6 +3,7 @@ from auctionApp.models import ExchangeRate
 import json, datetime, pytz
 
 
+# TODO: städa upp koden
 class Currency:
     def assert_currency(request):
         if 'currency' not in request.session:

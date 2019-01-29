@@ -8,6 +8,7 @@ from auctionApp.forms import AddNewUserForm, EditUserForm
 from auctionApp.views import UserSettings
 
 
+# TODO: Färdig fil, kommentera
 class AddUser(View):
     def get(self, request):
         if request.user.is_authenticated:
@@ -18,7 +19,7 @@ class AddUser(View):
         form = AddNewUserForm(request.POST)
 
         if not form.is_valid():
-            request.error_message = str(form.errors).split("<li>")[2].split("</li>")[0]
+            request.error_message = form.errors['__all__'][0]
             return render(request, 'signup.html', {'signup_form': form})
 
         data = form.cleaned_data
@@ -35,7 +36,6 @@ class AddUser(View):
 
 
 class EditUser(View):
-
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('home')
@@ -47,7 +47,7 @@ class EditUser(View):
     def post(self, request):
         form = EditUserForm(request.POST)
         if not form.is_valid():
-            request.error_message = str(form.errors).split("<li>")[2].split("</li>")[0]
+            request.error_message = form.errors['__all__'][0]
             return render(request, 'account_settings.html', {'form': form})
 
         data = form.cleaned_data
@@ -81,6 +81,7 @@ class ChangeCurrency(View):
     def post(self, request):
         currency = request.POST['currency']
         request.session['currency'] = currency
+
         if request.user.is_authenticated:
             if request.user.id in UserSettings.objects.all():
                 usersettings = UserSettings.objects.get(id=request.user.id)

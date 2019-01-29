@@ -1,12 +1,11 @@
 {% if auction.active and not auction.banned %}
     {% load static %}
-    <script src="{% static 'validate_bid_form.js' %}"></script>
     <div id="input-div">
         <form id="bid-form" action="{% url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm({{ auction.current_price }})">
             {% csrf_token %}
             <input id="starting_price" name="starting_price" value="{{ auction.current_price }}" oninput="updateCur({{ auction.rate }})" size="3" style="text-align: center; padding-right: 5px"/> EUR
             {% if request.session.currency != 'EUR' %}
-                = <span id="converted">{{ auction.converted_price }} </span> {{ request.session.currency }}
+                = <span id="converted">{{ auction.current_converted }} </span> {{ request.session.currency }}
             {% endif %}
         </form>
         <button type="submit" form="bid-form" name="place-bid">Place bid</button>

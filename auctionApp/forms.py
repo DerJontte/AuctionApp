@@ -3,6 +3,7 @@ from django import forms
 from auctionApp.currency import Currency
 
 
+# TODO: städa koden och kommentera
 class LoginForm(forms.Form):
     username = forms.CharField(initial='Username', max_length=20)
     password = forms.CharField(initial='Password', widget=forms.PasswordInput())
@@ -18,9 +19,9 @@ class AddNewUserForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         if User.objects.filter(username=cleaned_data['username']).exists():
-            self.add_error('username', 'Sorry, that username is already taken.')
+            self.add_error(None, 'Username is already taken')
         elif cleaned_data['password'] != cleaned_data['password_repeat']:
-            self.add_error("password", "Passwords do not match")
+            self.add_error(None, 'Passwords do not match')
         return cleaned_data
 
 
@@ -33,7 +34,7 @@ class EditUserForm(forms.Form):
     def clean(self):
         cleaned_data = super().clean()
         if cleaned_data['new_password'] != cleaned_data['new_password_repeat']:
-            self.add_error("new_password", "Passwords do not match")
+            self.add_error(None, "Passwords do not match")
         return cleaned_data
 
 

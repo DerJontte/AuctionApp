@@ -3,12 +3,13 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.views import View
 from datetime import datetime
-
 from auctionApp.currency import Currency
 from auctionApp.models import Auction
-from auctionApp.views import admin_mail
+
+admin_mail = 'broker@awesomeauctions.com'
 
 
+# Ready but needs comments
 class Auctions(View):
     def get(self, request, **kwargs):
         Currency.assert_currency(request)
@@ -49,6 +50,7 @@ class Auctions(View):
         auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
         auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
 
+        auction.rate = Currency.get_rate(request.session['currency'])
         auction.starting_converted = Currency.exchange(auction.starting_price, request.session['currency'])
         auction.current_converted = Currency.exchange(auction.current_price, request.session['currency'])
 

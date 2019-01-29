@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from auctionApp.account_management import EditUser, AddUser, ChangeCurrency
+from auctionApp.account import EditUser, AddUser, ChangeCurrency
 from auctionApp.auction_add import AddAuction
 from auctionApp.auction_bid import BidAuction
 from auctionApp.auction_edit import EditAuction

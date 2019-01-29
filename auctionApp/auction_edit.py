@@ -1,11 +1,10 @@
-from django.db import transaction
 from django.shortcuts import redirect, render
 from django.views import View
 from auctionApp.forms import AddAuctionForm
 from auctionApp.models import Auction
 
 
-# Ready sans comments
+# TODO: Ready but needs comments
 class EditAuction(View):
     def get(self, request, number):
         auction = Auction.objects.get(id=number)
@@ -16,14 +15,13 @@ class EditAuction(View):
                                                      'auction_id': number})
 
     def post(self, request, number):
-        with transaction.atomic():
-            if number == request.session['to_update']:
-                auction = Auction.objects.select_for_update().get(id=number)
-                auction.description = request.POST['description']
-                auction.save()
-                request.info_message = 'Auction successfully updated.'
-            else:
-                request.error_message = 'Error updating auction.'
+        if number == request.session['to_update']:
+            auction = Auction.objects.get(id=number)
+            auction.description = request.POST['description']
+            auction.save()
+            request.info_message = 'Auction successfully updated.'
+        else:
+            request.error_message = 'Error updating auction.'
 
         auction.time_posted = auction.time_posted.strftime('%d/%m/%y %H:%M')
         auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')

@@ -13,22 +13,22 @@ class AuctionTestCase(TestCase):
 
         # Create three users
         POST_1 = {'username': 'testuser_a',
-                'email': 'test@stuff.com',
-                'password1': 'securepassword',
-                'password2': 'securepassword',
-                'currency': 'SEK'}
+                  'email': 'test@stuff.com',
+                  'password1': 'securepassword',
+                  'password2': 'securepassword',
+                  'currency': 'SEK'}
 
         POST_2 = {'username': 'testuser_b',
-                'email': 'test@stuff.com',
-                'password1': 'securepassword',
-                'password2': 'securepassword',
-                'currency': 'SEK'}
+                  'email': 'test@stuff.com',
+                  'password1': 'securepassword',
+                  'password2': 'securepassword',
+                  'currency': 'SEK'}
 
         POST_3 = {'username': 'testuser_c',
-                'email': 'test@stuff.com',
-                'password1': 'securepassword',
-                'password2': 'securepassword',
-                'currency': 'EUR'}
+                  'email': 'test@stuff.com',
+                  'password1': 'securepassword',
+                  'password2': 'securepassword',
+                  'currency': 'EUR'}
 
         response_3 = c_3.post('/signup/', POST_3)
         self.assertEqual(response_3.status_code, 200)
@@ -38,7 +38,6 @@ class AuctionTestCase(TestCase):
 
         response_1 = c_1.post('/signup/', POST_1)
         self.assertEqual(response_1.status_code, 200)
-
 
     def test_UC3(self):
         # Login testuser A

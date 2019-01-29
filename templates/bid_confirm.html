@@ -9,7 +9,7 @@
     </div>
 
     <form id="bid-form" action="{%  url 'auctionBid' auction.id %}" method="post" onsubmit="return validateForm()">
-        <input type="hidden" name="bid" value="{{ bid }}">
+        <input type="hidden" name="bid" value="{{ request.bid }}">
         {% csrf_token %}
 
         <section class="grid">
