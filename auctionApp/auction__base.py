@@ -1,6 +1,5 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from datetime import datetime
 from auctionApp.currency import Currency
@@ -9,7 +8,7 @@ from auctionApp.models import Auction
 admin_mail = 'broker@awesomeauctions.com'
 
 
-# Ready but needs comments
+# TODO: Comments
 class Auctions(View):
     def get(self, request, **kwargs):
         Currency.assert_currency(request)
@@ -31,17 +30,15 @@ class Auctions(View):
         for auction in auctions:
             auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
             if request.session['currency'] != 'EUR':
-                converted_price = Currency.exchange(auction.current_price, request.session['currency'])
+                converted_price = Currency.convert(auction.current_price, request.session['currency'])
                 auction.current_price = "%.2f" % converted_price
 
         return render(request, 'auction_listing.html', {'auctions': auctions})
 
     def fetch_auction(request, number):
         Currency.assert_currency(request)
-        try:
-            auction = Auction.objects.get(id=number)
-        except ObjectDoesNotExist:
-            return redirect('home')
+
+        auction = get_object_or_404(Auction, id=number)
 
         if auction.banned and not request.user.is_superuser:
             request.error_message = 'The auction you are trying to view has been banned'
@@ -51,8 +48,8 @@ class Auctions(View):
         auction.time_closing = auction.time_closing.strftime('%d/%m/%y %H:%M')
 
         auction.rate = Currency.get_rate(request.session['currency'])
-        auction.starting_converted = Currency.exchange(auction.starting_price, request.session['currency'])
-        auction.current_converted = Currency.exchange(auction.current_price, request.session['currency'])
+        auction.starting_converted = Currency.convert(auction.starting_price, request.session['currency'])
+        auction.current_converted = Currency.convert(auction.current_price, request.session['currency'])
 
         return render(request, 'auction_item_view.html', {'auction': auction})
 

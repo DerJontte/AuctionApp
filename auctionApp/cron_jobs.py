@@ -5,7 +5,6 @@ from django_cron import CronJobBase, Schedule
 from auctionApp.models import Auction
 
 
-# TODO: ready but needs comments
 class ResolveAuctions(CronJobBase):
     schedule = Schedule(run_every_mins=5) # Resolve auctions every 5 minutes
     code = 'auctionApp.resolve_auctions'
@@ -13,15 +12,13 @@ class ResolveAuctions(CronJobBase):
     def do(self):
         print("Resolving auctions...")
 
-        current_time = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
         resolvables = []
-
         for auction in Auction.objects.all():
-            if auction.time_closing.strftime('%Y%m%d%H%M%S') < current_time and auction.active and not auction.banned:
+            if auction.time_closing < datetime.datetime.now() and auction.active and not auction.banned:
                 resolvables.append(auction)
 
         if resolvables is None:
-            print ('No active unresolved auctions found.')
+            print('No active unresolved auctions found.')
             return
 
         for auction in resolvables:

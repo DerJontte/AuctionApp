@@ -7,10 +7,8 @@ from datetime import datetime, timedelta
 from auctionApp.auction__base import Auctions
 from auctionApp.currency import Currency
 from auctionApp.models import Auction
-from auctionApp.views import admin_mail
 
 
-# TODO: Allt klart
 class BidAuction(View):
     def post(self, request, number):
         # User must be logged in to be able to bid on an auction
@@ -39,7 +37,7 @@ class BidAuction(View):
         # Format the bid confirmation according to the user's currency
         currency = request.session['currency']
         new_bid = request.POST['starting_price']
-        converted_bid = new_bid if currency is 'EUR' else Currency.exchange(float(new_bid), currency)
+        converted_bid = new_bid if currency is 'EUR' else Currency.convert(float(new_bid), currency)
         display_bid = 'Do you want to bid %.2f %s on this auction?' % (converted_bid, currency)
 
         # Use (or "abuse") the error_message to display this rather important question to the user
@@ -100,6 +98,8 @@ class BidAuction(View):
         request.info_message = 'Your bid has been registered'
 
         seller_email = auction.seller_email
+        admin_mail = 'broker@awesomeauctions.com'
+
         to_seller = 'A new bid has been registered for your auction "' + str(auction.title) + '".'
         send_mail('A new bid has been registered',
                   to_seller,

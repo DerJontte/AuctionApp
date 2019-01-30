@@ -4,6 +4,7 @@ from rest_framework.parsers import JSONParser
 from restAPI.serializer import AuctionSerializer
 from auctionApp.models import Auction
 
+
 @csrf_exempt
 def auction_list(request):
     # List all auctions that are active, not banned and not resolved.

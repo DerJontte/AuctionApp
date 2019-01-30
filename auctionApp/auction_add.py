@@ -8,7 +8,6 @@ from auctionApp.models import Auction
 from auctionApp.auction__base import Auctions, admin_mail
 
 
-# This one is ready, just the comments missing
 class AddAuction(View):
     def get(self, request):
         if not request.user.is_authenticated:
@@ -51,8 +50,8 @@ class AddAuction(View):
                               time_closing=time_closing.strftime('%d/%m/%y %H:%M'),
                               time_posted=time_posted.strftime('%d/%m/%y %H:%M'))
 
-            auction.starting_converted = Currency.exchange(auction.starting_price, request.session['currency'])
-            auction.current_converted = Currency.exchange(auction.current_price, request.session['currency'])
+            auction.starting_converted = Currency.convert(auction.starting_price, request.session['currency'])
+            auction.current_converted = Currency.convert(auction.current_price, request.session['currency'])
 
             return render(request, 'auction_confirm.html', {'auction': auction})
 

@@ -4,11 +4,12 @@ from django.shortcuts import redirect
 from django.views import View
 
 from auctionApp.currency import Currency
-from auctionApp.views import UserSettings
+from auctionApp.models import UserSettings
 
 
 class Login(View):
     def post(self, request):
+        # Pretty straightforward: check that the username exists and password is correct, then log the user in
         username = request.POST['username']
         password = request.POST['password']
         try:
@@ -25,5 +26,6 @@ class Login(View):
 
 class Logout(View):
     def post(self, request):
+        # Log out the user and return to the page they were on
         logout(request)
         return redirect(request.META['HTTP_REFERER'])

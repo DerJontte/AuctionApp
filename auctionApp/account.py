@@ -5,10 +5,10 @@ from django.shortcuts import redirect, render
 from django.views import View
 from auctionApp.auction__base import Auctions
 from auctionApp.forms import AddNewUserForm, EditUserForm
-from auctionApp.views import UserSettings
+from auctionApp.models import UserSettings
 
 
-# TODO: Färdig fil, kommentera
+# TODO: Comments
 class AddUser(View):
     def get(self, request):
         if request.user.is_authenticated:

@@ -2,8 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
-# TODO: ready.
-# Create your models here.
 class UserSettings(models.Model):
     id = models.IntegerField(primary_key=True, unique=True)
     currency = models.CharField(max_length=3, null=True, blank=True)
