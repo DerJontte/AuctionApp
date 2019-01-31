@@ -3,7 +3,10 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views import View
+
+from django import forms
 from auctionApp.auction__base import Auctions
+from auctionApp.currency import Currency
 from auctionApp.forms import AddNewUserForm, EditUserForm
 from auctionApp.models import UserSettings
 
@@ -13,6 +16,8 @@ class AddUser(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('home')
+        form = AddNewUserForm
+        form.currency = forms.ChoiceField(choices=Currency.code_list(type='pairlist'), label='What is your currency?',initial='EUR')
         return render(request, "signup.html", {'signup_form': AddNewUserForm})
 
     def post(self, request):

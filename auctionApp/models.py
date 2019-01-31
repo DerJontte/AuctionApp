@@ -46,6 +46,6 @@ class Bid(models.Model):
 
 
 class ExchangeRate(models.Model):
-     code = models.CharField(primary_key=True, max_length=3)
-     rate = models.FloatField()
-     last_updated = models.DateTimeField(auto_now=True)
+    code = models.CharField(primary_key=True, max_length=3)
+    rate = models.FloatField()
+    last_updated = models.DateTimeField(auto_now=True)
