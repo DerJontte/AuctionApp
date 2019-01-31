@@ -16,9 +16,11 @@ class AddUser(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('home')
-        form = AddNewUserForm
-        form.currency = forms.ChoiceField(choices=Currency.code_list(type='pairlist'), label='What is your currency?',initial='EUR')
-        return render(request, "signup.html", {'signup_form': AddNewUserForm})
+        form = AddNewUserForm()
+        form.fields['currency'] = forms.ChoiceField(choices=Currency.code_list(type='pairlist'),
+                                                    label='What is your currency?',
+                                                    initial='EUR')
+        return render(request, "signup.html", {'signup_form': form})
 
     def post(self, request):
         form = AddNewUserForm(request.POST)

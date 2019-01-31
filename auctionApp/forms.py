@@ -13,12 +13,7 @@ class AddNewUserForm(forms.Form):
     email = forms.EmailField(label='E-mail')
     password = forms.CharField(widget=forms.PasswordInput(), label='Password')
     password_repeat = forms.CharField(widget=forms.PasswordInput(), label='Re-type password')
-
-    def __init__(self, *args, **kwargs):
-        super(AddNewUserForm, self).__init__(*args, **kwargs)
-        self.fields['currency'] = forms.ChoiceField(choices=Currency.code_list(type='pairlist'),
-                                                    label = 'What is your currency?',
-                                                    initial = 'EUR')
+    currency = None
 
     def clean(self):
         # When validating the form, check that the username is free and that the repeated passwords match. If not,
@@ -52,4 +47,5 @@ class AddAuctionForm(forms.Form):
 
 
 class CurrencyPicker(forms.Form):
-    currency = forms.CharField(widget=forms.Select(choices=Currency.code_list(type='pairlist')), label='Currency')
+    currency = None
+    # forms.ChoiceField(choices=Currency.code_list(type='pairlist'), label='Currency')
