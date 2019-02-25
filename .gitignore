@@ -1,3 +1,4 @@
+.idea/
 Scripts/
 auctionApp/__pycache__/
 auctionApp/migrations/0002_remove_auction_hash_id.py
