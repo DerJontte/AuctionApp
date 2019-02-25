@@ -13,7 +13,7 @@ class AddNewUserForm(forms.Form):
     email = forms.EmailField(label='E-mail')
     password = forms.CharField(widget=forms.PasswordInput(), label='Password')
     password_repeat = forms.CharField(widget=forms.PasswordInput(), label='Re-type password')
-    currency = None
+    currency = forms.ChoiceField(choices=Currency.code_list(type='pairlist'), label='Currency', initial='EUR')
 
     def clean(self):
         # When validating the form, check that the username is free and that the repeated passwords match. If not,
