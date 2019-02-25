@@ -1,0 +1,7 @@
+Scripts/
+auctionApp/__pycache__/
+auctionApp/migrations/0002_remove_auction_hash_id.py
+auctionApp/migrations/__pycache__/0002_remove_auction_hash_id.cpython-37.pyc
+db.sqlite3
+restAPI/__pycache__/
+tmp/
